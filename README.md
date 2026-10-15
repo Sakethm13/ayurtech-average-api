@@ -5,10 +5,11 @@ A REST API built with Node.js and Express that calculates the running average of
 ## Features
 
 - Maintains a running total and count of submitted numbers.
-- Returns the average after each valid request.
-- Validates numeric input and rejects malformed JSON.
+- Returns the updated average after each valid request.
+- Validates input and rejects invalid numbers and malformed JSON.
 - Includes automated tests using Node.js's built-in test runner and Supertest.
-- Uses Husky Git hooks and Commitlint to enforce tests and Conventional Commits.
+- Uses Husky Git hooks to run tests before commits and validate commit messages with Commitlint.
+- Follows the Conventional Commits standard.
 
 ## Requirements
 
@@ -16,6 +17,8 @@ A REST API built with Node.js and Express that calculates the running average of
 - npm
 
 ## Installation
+
+Clone the repository and install the dependencies:
 
 ```bash
 git clone https://github.com/Sakethm13/ayurtech-average-api.git
@@ -25,11 +28,13 @@ npm install
 
 ## Run the API
 
+Start the server:
+
 ```bash
 npm start
 ```
 
-The server runs at `http://localhost:3000`.
+The API runs at `http://localhost:3000` by default.
 
 ## API Usage
 
@@ -37,7 +42,7 @@ The server runs at `http://localhost:3000`.
 
 **Content-Type:** `application/json`
 
-Example request body:
+### Example request
 
 ```json
 {
@@ -45,7 +50,7 @@ Example request body:
 }
 ```
 
-Example response:
+### Example response
 
 ```json
 {
@@ -55,29 +60,43 @@ Example response:
 }
 ```
 
-Submit another number to update the running average. The average state is held in memory and resets when the server restarts.
+Each successful request adds its number to the running total and updates the average. The state is held in memory and resets when the server restarts.
 
 ### Test with cURL
 
 ```bash
-curl -X POST http://localhost:3000/average -H "Content-Type: application/json" -d "{\"number\":10}"
+curl -X POST http://localhost:3000/average \
+  -H "Content-Type: application/json" \
+  -d "{\"number\":10}"
+```
+
+On Windows PowerShell, you can alternatively use:
+
+```powershell
+Invoke-RestMethod -Uri "http://localhost:3000/average" -Method Post -ContentType "application/json" -Body '{"number":10}'
 ```
 
 ## Run Tests
+
+Execute the automated test suite:
 
 ```bash
 npm test
 ```
 
-The tests cover initial averages, multiple requests, invalid input, zero and negative values, and malformed JSON.
+The tests cover the initial average, multiple requests, invalid input, zero and negative numbers, and malformed JSON.
 
 ## Git Hooks
 
-- **Pre-commit:** Runs the test suite.
-- **Commit message:** Commitlint validates Conventional Commit messages.
+- **Pre-commit hook:** Runs the automated test suite before a commit.
+- **Commit message hook:** Uses Commitlint to enforce Conventional Commit messages.
 
-Example:
+Example commit:
 
 ```bash
 git commit -m "feat: implement running average API"
 ```
+
+## Repository
+
+[View the Ayurtech Average API on GitHub](https://github.com/Sakethm13/ayurtech-average-api)
